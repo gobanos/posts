@@ -1,0 +1,10 @@
+[package]
+name = "posts"
+version = "0.1.0"
+authors = ["Grégory Obanos <gregory.obanos@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+diesel = { version = "1.4", features = ["sqlite", "chrono"] }
+dotenv = "0.13"
+chrono = { version = "0.4", features = ["serde"] }

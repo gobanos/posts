@@ -1,0 +1,13 @@
+CREATE TABLE posts (
+    id_post INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    id_user INTEGER NOT NULL,
+    published_at DATETIME,
+    title VARCHAR NOT NULL,
+    body TEXT NOT NULL,
+    FOREIGN KEY (id_user) REFERENCES users(id_user)
+);
+
+CREATE TABLE users (
+    id_user INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    name VARCHAR(255) NOT NULL
+);
