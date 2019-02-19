@@ -4,7 +4,7 @@ use chrono::NaiveDateTime;
 type Id = i32;
 
 #[derive(Insertable)]
-#[table_name="posts"]
+#[table_name = "posts"]
 pub struct NewPost<'a> {
     pub title: &'a str,
     pub body: &'a str,
@@ -12,7 +12,7 @@ pub struct NewPost<'a> {
 }
 
 #[derive(Insertable)]
-#[table_name="users"]
+#[table_name = "users"]
 pub struct NewUser<'a> {
     pub name: &'a str,
 }

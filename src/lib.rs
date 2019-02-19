@@ -9,32 +9,34 @@ use diesel::sqlite::SqliteConnection;
 use dotenv::dotenv;
 use std::env;
 
-use crate::models::{User, Post};
+use crate::models::{Post, User};
 
 pub fn establish_connection() -> SqliteConnection {
     dotenv().ok();
 
-    let database_url = env::var("DATABASE_URL")
-        .expect("DATABASE_URL must be set");
+    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
     SqliteConnection::establish(&database_url)
         .expect(&format!("Error connecting to {}", database_url))
 }
 
-pub fn create_user(conn: &SqliteConnection, name: &str) /*-> User*/{
+pub fn create_user(conn: &SqliteConnection, name: &str) -> User {
     use crate::models::NewUser;
     use schema::users;
 
-    let new_user = NewUser {
-        name,
-    };
+    let new_user = NewUser { name };
 
     diesel::insert_into(users::table)
         .values(&new_user)
         .execute(conn)
         .expect("Error saving new user");
+
+    users::table
+        .order(users::id_user.desc())
+        .first(conn)
+        .expect("Error retrieving new user")
 }
 
-pub fn create_post<'a>(conn: &SqliteConnection, user: &User, title: &str, body: &str) /*-> Post*/ {
+pub fn create_post<'a>(conn: &SqliteConnection, user: &User, title: &str, body: &str) -> Post {
     use crate::models::NewPost;
     use schema::posts;
 
@@ -48,4 +50,9 @@ pub fn create_post<'a>(conn: &SqliteConnection, user: &User, title: &str, body: 
         .values(&new_post)
         .execute(conn)
         .expect("Error saving new post");
+
+    posts::table
+        .order(posts::id_post.desc())
+        .first(conn)
+        .expect("Error retrieving new post")
 }
